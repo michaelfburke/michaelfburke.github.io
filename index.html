@@ -1,189 +1,263 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+
+<html lang="en" data-theme="light">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width" />
   <title>Michael Burke</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&family=Geist+Mono:wght@300;400&display=swap" rel="stylesheet" />
+
   <style>
     :root {
-      --bg: #f7f8fb;
-      --panel: #ffffff;
-      --text: #14161a;
-      --muted: #4b5563;
-      --border: #d8dce3;
-      --link: #1d4ed8;
-      --button-bg: #eef2ff;
+      --bg:     #ffffff;
+      --text:   #111111;
+      --muted:  #888888;
+      --rule:   #e5e5e5;
+      --accent: #d95f00;
+    }
+    [data-theme="dark"] {
+      --bg:     #0f0f0f;
+      --text:   #e8e8e8;
+      --muted:  #666666;
+      --rule:   #222222;
+      --accent: #f07030;
     }
 
-    :root[data-theme="dark"] {
-      --bg: #0d1117;
-      --panel: #161b22;
-      --text: #e6edf3;
-      --muted: #9da7b3;
-      --border: #30363d;
-      --link: #7aa2ff;
-      --button-bg: #1f2937;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    * {
-      box-sizing: border-box;
-    }
+    html { font-size: 15px; }
 
     body {
-      margin: 0;
-      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-      line-height: 1.6;
       background: var(--bg);
       color: var(--text);
+      font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-weight: 300;
+      line-height: 1.65;
+      transition: background 0.25s, color 0.25s;
     }
 
-    .wrapper {
-      max-width: 760px;
+    .page {
+      max-width: 780px;
       margin: 0 auto;
-      padding: 2rem 1rem 3rem;
+      padding: 64px 24px 96px;
     }
 
-    header {
+    .main-layout {
+      display: flex;
+      gap: 48px;
+      align-items: flex-start;
+    }
+
+    .content { flex: 1; min-width: 0; }
+
+    .photo { flex-shrink: 0; width: 180px; }
+    .photo img { width: 100%; display: block; }
+
+    @media (max-width: 600px) {
+      .main-layout { flex-direction: column-reverse; }
+      .photo { width: 100%; max-width: 240px; }
+    }
+
+    /* ── Top bar ── */
+    .topbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 1rem;
-      margin-bottom: 2rem;
+      margin-bottom: 48px;
     }
 
-    h1 {
-      margin: 0;
-      font-size: clamp(2rem, 4vw, 2.6rem);
-      line-height: 1.2;
+    .name {
+      font-size: 0.93rem;
+      font-weight: 400;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .name:hover { color: var(--accent); }
+
+    /* Toggle */
+    .toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-family: 'Geist Mono', monospace;
+      font-weight: 300;
+      letter-spacing: 0.03em;
+      padding: 0;
+      transition: color 0.2s;
+    }
+    .toggle:hover { color: var(--text); }
+
+    /* ── Bio ── */
+    .bio {
+      font-size: 0.97rem;
+      color: var(--text);
+      margin-bottom: 40px;
+      max-width: 480px;
+    }
+    .bio p { margin-bottom: 10px; }
+    .bio p:last-child { margin-bottom: 0; }
+
+    .bio a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-color: var(--accent);
+    }
+    .bio a:hover { opacity: 0.75; }
+
+    /* ── Notes ── */
+    .notes-label {
+      font-size: 0.93rem;
+      color: var(--text);
+      margin-bottom: 12px;
     }
 
-    .subtitle {
-      margin: 0.5rem 0 0;
+    .notes {
+      list-style: none;
+      margin-bottom: 48px;
+    }
+    .notes li {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .notes li:first-child { border-top: 1px solid var(--rule); }
+
+    .notes a {
+      font-size: 0.93rem;
+      color: var(--accent);
+      text-decoration: none;
+      flex: 1;
+    }
+    .notes a:hover {
+      opacity: 0.75;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+    }
+
+    .notes .date {
+      font-family: 'Geist Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 300;
+      color: var(--muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* ── Footer links ── */
+    .footer {
+      font-size: 0.85rem;
       color: var(--muted);
     }
-
-    .theme-toggle {
-      border: 1px solid var(--border);
-      background: var(--button-bg);
-      color: var(--text);
-      padding: 0.55rem 0.85rem;
-      border-radius: 999px;
-      font: inherit;
-      cursor: pointer;
-      white-space: nowrap;
+    .footer .links-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      align-items: baseline;
     }
-
-    .card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 1rem 1.1rem;
-      margin: 0 0 1rem;
+    .footer .arrow { margin-right: 6px; }
+    .footer a {
+      color: var(--accent);
+      text-decoration: none;
     }
-
-    h2 {
-      margin: 0 0 0.65rem;
-      font-size: 1.1rem;
-    }
-
-    p, ul {
-      margin: 0;
-    }
-
-    ul {
-      padding-left: 1rem;
-    }
-
-    li + li {
-      margin-top: 0.35rem;
-    }
-
-    a {
-      color: var(--link);
+    .footer a:hover { opacity: 0.75; }
+    .footer .sep { margin: 0 5px; }
+    .footer .updated {
+      margin-top: 8px;
+      font-family: 'Geist Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
     }
   </style>
+
 </head>
 <body>
-  <main class="wrapper">
-    <header>
-      <div>
-        <h1>Michael Burke</h1>
-        <p class="subtitle">Product & engineering · London</p>
+
+<div class="page">
+
+  <div class="topbar">
+    <a class="name" href="/">Michael Burke</a>
+    <button class="toggle" id="themeToggle">light / dark</button>
+  </div>
+
+  <div class="main-layout">
+
+    <div class="content">
+
+      <div class="bio">
+        <p>
+          Product and engineering at <a href="https://www.thelandapp.com" target="_blank" rel="noopener">Land App</a>, in London.
+          Previously at <a href="https://www.investec.com" target="_blank" rel="noopener">Investec</a>.
+        </p>
+        <p>
+          Drawn to technology with real-world impact — currently thinking about resilient agricultural systems, conservation and biodiversity.
+        </p>
       </div>
-      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle color theme">
-        Toggle theme
-      </button>
-    </header>
 
-    <section class="card" aria-labelledby="intro-title">
-      <h2 id="intro-title">Hi, I’m Michael.</h2>
-      <p>
-        I work in product and engineering at Land App in London. Previously at Investec.
-        I care about technology and impact.
-      </p>
-    </section>
-
-    <section class="card" aria-labelledby="about-title">
-      <h2 id="about-title">About</h2>
-      <p>Space for a longer bio, what I’m building, and what I’m learning right now.</p>
-    </section>
-
-    <section class="card" aria-labelledby="notes-title">
-      <h2 id="notes-title">Recent notes</h2>
-      <p>Space for short updates, writing, and links to recent work.</p>
-    </section>
-
-    <section class="card" aria-labelledby="links-title">
-      <h2 id="links-title">Links</h2>
-      <ul>
-        <li><a href="https://www.linkedin.com/in/michael-burke-9a542b161/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-        <li><a href="https://github.com/michaelfburke" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+      <p class="notes-label">Recent notes:</p>
+      <ul class="notes">
+        <li>
+          <a href="#">On building at the edge of a sector</a>
+          <span class="date">May 2025</span>
+        </li>
+        <li>
+          <a href="#">What good product thinking looks like in a small team</a>
+          <span class="date">Mar 2025</span>
+        </li>
+        <li>
+          <a href="https://www.linkedin.com/posts/michael-burke-9a542b161_bng-register-ugcPost-7335411219559866368-ia3h?utm_source=share&utm_medium=member_desktop&rcm=ACoAACavMc0BnQPABRbyYHs7FZbO2UF0qseImzM" target="_blank" rel="noopener">Notes on land data and open infrastructure</a>
+          <span class="date">Jan 2025</span>
+        </li>
       </ul>
-    </section>
-  </main>
 
-  <script>
-    (function () {
-      var themeStorageKey = "theme";
-      var root = document.documentElement;
-      var toggle = document.getElementById("theme-toggle");
-      var saved = readStoredTheme();
-      var preferredDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      var theme = saved || (preferredDark ? "dark" : "light");
+      <div class="footer">
+        <div class="links-row">
+          <span class="arrow">[↗]:</span>
+          <a href="mailto:michaelfaureburke@gmail.com">Email</a><span class="sep">,</span>
+          <a href="https://www.linkedin.com/in/michael-burke-9a542b161/" target="_blank" rel="noopener">LinkedIn</a><span class="sep">,</span>
+          <a href="https://github.com/michaelfburke" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <div class="updated">Last updated: <span id="lastUpdated"></span></div>
+      </div>
 
-      function readStoredTheme() {
-        try {
-          return localStorage.getItem(themeStorageKey);
-        } catch (error) {
-          return null;
-        }
-      }
+    </div><!-- /.content -->
 
-      function persistTheme(nextTheme) {
-        try {
-          localStorage.setItem(themeStorageKey, nextTheme);
-        } catch (error) {
-        }
-      }
+    <div class="photo">
+      <img src="75640024_left.jpg" alt="Michael Burke hiking in the hills" />
+    </div>
 
-      function updateToggle(nextTheme) {
-        toggle.setAttribute("aria-label", nextTheme === "dark" ? "Switch to light mode" : "Switch to dark mode");
-        toggle.textContent = nextTheme === "dark" ? "Light mode" : "Dark mode";
-      }
+  </div><!-- /.main-layout -->
 
-      function apply(nextTheme) {
-        root.setAttribute("data-theme", nextTheme);
-        persistTheme(nextTheme);
-        updateToggle(nextTheme);
-      }
+<script>
+  // Last updated date
+  const d = new Date();
+  const opts = { year: 'numeric', month: 'long', day: 'numeric' };
+  document.getElementById('lastUpdated').textContent = d.toLocaleDateString('en-GB', opts);
 
-      apply(theme);
+  // Theme toggle
+  const html = document.documentElement;
+  const btn  = document.getElementById('themeToggle');
+  const saved = localStorage.getItem('mb-theme');
+  if (saved) {
+    html.setAttribute('data-theme', saved);
+  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    html.setAttribute('data-theme', 'dark');
+  }
+  btn.addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('mb-theme', next);
+  });
+</script>
 
-      toggle.addEventListener("click", function () {
-        theme = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-        apply(theme);
-      });
-    }());
-  </script>
 </body>
 </html>
