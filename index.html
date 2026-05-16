@@ -136,24 +136,24 @@
     <section class="card" aria-labelledby="links-title">
       <h2 id="links-title">Links</h2>
       <ul>
-        <li><a href="https://www.linkedin.com/in/michael-burke-9a542b161/" rel="noopener noreferrer">LinkedIn</a></li>
-        <li><a href="https://github.com/michaelfburke" rel="noopener noreferrer">GitHub</a></li>
+        <li><a href="https://www.linkedin.com/in/michael-burke-9a542b161/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+        <li><a href="https://github.com/michaelfburke" target="_blank" rel="noopener noreferrer">GitHub</a></li>
       </ul>
     </section>
   </main>
 
   <script>
     (function () {
-      var key = "theme";
+      var themeStorageKey = "theme";
       var root = document.documentElement;
       var toggle = document.getElementById("theme-toggle");
-      var saved = localStorage.getItem(key);
+      var saved = localStorage.getItem(themeStorageKey);
       var preferredDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
       var theme = saved || (preferredDark ? "dark" : "light");
 
       function apply(nextTheme) {
         root.setAttribute("data-theme", nextTheme);
-        localStorage.setItem(key, nextTheme);
+        localStorage.setItem(themeStorageKey, nextTheme);
       }
 
       apply(theme);
