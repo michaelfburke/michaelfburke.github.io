@@ -147,13 +147,34 @@
       var themeStorageKey = "theme";
       var root = document.documentElement;
       var toggle = document.getElementById("theme-toggle");
-      var saved = localStorage.getItem(themeStorageKey);
+      var saved = readStoredTheme();
       var preferredDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
       var theme = saved || (preferredDark ? "dark" : "light");
 
+      function readStoredTheme() {
+        try {
+          return localStorage.getItem(themeStorageKey);
+        } catch (error) {
+          return null;
+        }
+      }
+
+      function persistTheme(nextTheme) {
+        try {
+          localStorage.setItem(themeStorageKey, nextTheme);
+        } catch (error) {
+        }
+      }
+
+      function updateToggle(nextTheme) {
+        toggle.setAttribute("aria-label", nextTheme === "dark" ? "Switch to light mode" : "Switch to dark mode");
+        toggle.textContent = nextTheme === "dark" ? "Light mode" : "Dark mode";
+      }
+
       function apply(nextTheme) {
         root.setAttribute("data-theme", nextTheme);
-        localStorage.setItem(themeStorageKey, nextTheme);
+        persistTheme(nextTheme);
+        updateToggle(nextTheme);
       }
 
       apply(theme);
