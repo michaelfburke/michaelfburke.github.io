@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>Who Is This Actually For? — Michael Burke</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&family=Geist+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root { --bg: #ffffff; --text: #111111; --muted: #888888; --rule: #e5e5e5; --accent: #d95f00; }
+    [data-theme="dark"] { --bg: #0f0f0f; --text: #e8e8e8; --muted: #666666; --rule: #222222; --accent: #f07030; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; }
+    body { background: var(--bg); color: var(--text); font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 300; line-height: 1.7; transition: background 0.25s, color 0.25s; }
+    .page { max-width: 680px; margin: 0 auto; padding: 64px 24px 96px; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 56px; }
+    .name { font-size: 0.93rem; font-weight: 400; color: var(--text); text-decoration: none; }
+    .name:hover { color: var(--accent); }
+    .toggle { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 0.78rem; font-family: 'Geist Mono', monospace; font-weight: 300; letter-spacing: 0.03em; padding: 0; transition: color 0.2s; }
+    .toggle:hover { color: var(--text); }
+    .article-meta { margin-bottom: 40px; }
+    .article-date { font-family: 'Geist Mono', monospace; font-size: 0.75rem; font-weight: 300; color: var(--muted); display: block; margin-bottom: 16px; }
+    h1 { font-size: 1.55rem; font-weight: 400; line-height: 1.3; margin-bottom: 10px; color: var(--text); }
+    .subtitle { font-size: 0.95rem; color: var(--muted); font-style: italic; line-height: 1.5; }
+    .body { font-size: 0.97rem; }
+    .body p { margin-bottom: 1.25em; }
+    .body em { font-style: italic; }
+    .body hr { border: none; border-top: 1px solid var(--rule); margin: 2em 0; }
+    .body h2 { font-size: 1rem; font-weight: 500; margin-top: 2em; margin-bottom: 0.75em; color: var(--text); }
+    .resources p { font-size: 0.93rem; margin-bottom: 1em; padding-left: 1.2em; text-indent: -1.2em; color: var(--text); }
+    .resources a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+    .resources a:hover { opacity: 0.75; }
+    .back { display: inline-block; margin-top: 48px; font-family: 'Geist Mono', monospace; font-size: 0.78rem; color: var(--muted); text-decoration: none; }
+    .back:hover { color: var(--accent); }
+
+    /* ── Framework Tool ── */
+    .fw-wrap { font-family: 'Lora', Georgia, serif; background: #f7f4ee; border-radius: 12px; overflow: hidden; margin: 2.5em 0; box-shadow: 0 2px 20px rgba(0,0,0,0.08); }
+    .fw-header { border-bottom: 1px solid #ddd8cc; padding: 18px 28px; display: flex; align-items: center; justify-content: space-between; background: #f7f4ee; }
+    .fw-wordmark { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: #8a7f6e; font-weight: 600; }
+    .fw-progress { display: flex; align-items: center; gap: 6px; }
+    .fw-dot { height: 8px; border-radius: 4px; transition: all 0.3s ease; }
+    .fw-dot-past    { width: 8px;  background: #c4571a; }
+    .fw-dot-current { width: 24px; background: #1c1c2b; }
+    .fw-dot-future  { width: 8px;  background: #d4c9b5; }
+    .fw-reset-btn { display: flex; align-items: center; gap: 8px; background: none; border: 1.5px solid #ddd8cc; border-radius: 6px; padding: 7px 14px; cursor: pointer; font-size: 13px; color: #7a7060; font-family: 'Lora', Georgia, serif; transition: border-color 0.18s, color 0.18s; }
+    .fw-reset-btn:hover { border-color: #c4571a; color: #c4571a; }
+    .fw-main { padding: 40px 28px; }
+    .fw-step-label { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: #c4571a; font-family: 'Lora', Georgia, serif; font-weight: 600; margin-bottom: 12px; text-align: center; }
+    .fw-question { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 26px; line-height: 1.3; color: #1c1c2b; font-weight: 600; margin-bottom: 10px; text-align: center; }
+    .fw-subtext { font-size: 14px; color: #7a7060; line-height: 1.6; text-align: center; margin-bottom: 32px; font-style: italic; }
+    .fw-options { display: flex; flex-direction: column; gap: 10px; }
+    .fw-option { background: #f0ece0; border: 1.5px solid #ddd8cc; border-radius: 8px; padding: 16px 20px; cursor: pointer; display: flex; align-items: center; gap: 16px; transition: background 0.18s, border-color 0.18s, transform 0.18s, box-shadow 0.18s; }
+    .fw-option:hover { background: #fff; border-color: #c4571a; transform: translateX(4px); box-shadow: 0 2px 12px rgba(196,87,26,0.1); }
+    .fw-option.fw-selected { background: #1c1c2b; border-color: #1c1c2b; transform: none; }
+    .fw-option-icon { width: 32px; height: 32px; border-radius: 50%; background: #e8e2d4; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #c4571a; }
+    .fw-option.fw-selected .fw-option-icon { background: rgba(255,255,255,0.15); color: #f7f4ee; }
+    .fw-option-label { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 16px; font-weight: 600; color: #1c1c2b; margin-bottom: 2px; }
+    .fw-option.fw-selected .fw-option-label { color: #f7f4ee; }
+    .fw-option-desc { font-size: 13px; color: #7a7060; line-height: 1.4; }
+    .fw-option.fw-selected .fw-option-desc { color: #c4b8a8; }
+    .fw-rec-label { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: #c4571a; font-family: 'Lora', Georgia, serif; font-weight: 600; margin-bottom: 20px; text-align: center; }
+    .fw-answers-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+    .fw-chip { background: #e8e2d4; border-radius: 20px; padding: 4px 12px; font-size: 12px; color: #5a5040; }
+    .fw-result-card { border-radius: 12px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.1); }
+    .fw-result-header { background: #1c1c2b; padding: 28px 32px; }
+    .fw-result-tag { display: inline-block; color: #fff; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; padding: 4px 10px; border-radius: 4px; margin-bottom: 14px; font-family: 'Lora', Georgia, serif; font-weight: 600; }
+    .fw-result-title { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 28px; color: #f7f4ee; font-weight: 600; margin-bottom: 8px; line-height: 1.2; }
+    .fw-result-tagline { font-size: 14px; color: #9a9080; font-style: italic; }
+    .fw-result-body { background: #fff; border: 1.5px solid #ddd8cc; border-top: none; border-radius: 0 0 12px 12px; }
+    .fw-section { padding: 22px 28px; border-bottom: 1px solid #f0ece0; }
+    .fw-section:last-child { border-bottom: none; }
+    .fw-section-title { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-family: 'Lora', Georgia, serif; font-weight: 700; margin-bottom: 12px; }
+    .fw-channel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    @media (max-width: 480px) { .fw-channel-grid { grid-template-columns: 1fr; } }
+    .fw-channel-pill { border-radius: 6px; padding: 8px 12px; font-size: 13px; color: #1c1c2b; font-weight: 500; }
+    .fw-body-text { font-size: 14px; color: #3a3428; line-height: 1.7; }
+    .fw-cred-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+    .fw-cred-item { display: flex; gap: 10px; font-size: 14px; color: #3a3428; line-height: 1.55; align-items: flex-start; }
+    .fw-cred-icon { flex-shrink: 0; margin-top: 2px; }
+    .fw-escalate-box { border-radius: 8px; padding: 14px 16px; font-size: 13.5px; color: #3a3428; line-height: 1.65; }
+    .fw-evidence-box { background: #f7f4ee; border-left: 3px solid #c4571a; padding: 14px 16px; font-size: 13.5px; color: #5a5040; line-height: 1.65; font-style: italic; border-radius: 0 6px 6px 0; }
+    .fw-reset-center { display: flex; justify-content: center; margin-top: 20px; }
+    @keyframes fw-fade-slide { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    .fw-animated { animation: fw-fade-slide 0.3s ease; }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="topbar">
+    <a class="name" href="/">Michael Burke</a>
+    <button class="toggle" id="themeToggle">light / dark</button>
+  </div>
+
+  <div class="article-meta">
+    <span class="article-date">May 2026</span>
+    <h1>Who Is This Actually For?</h1>
+    <p class="subtitle">A decision framework for sharing research when your goal is impact, not prestige</p>
+  </div>
+
+  <div class="body">
+
+    <p>There is a version of this question that sounds like laziness: <em>do I really need to write the full paper?</em></p>
+
+    <p>But there is a more honest version that sounds like strategy: <em>what is the right amount of formalisation for this particular piece of work, given who needs to use it, and when?</em></p>
+
+    <p>Those are different questions. The first is about avoiding effort. The second is about allocating it well.</p>
+
+    <hr />
+
+    <p>The traditional academic publishing pipeline was built for a world where knowledge was scarce, access was controlled, and institutional validation was the only credible signal of quality. That world is changing fast. A 2025 paper in <em>PNAS</em> formally documented what many researchers already felt: academic publishing serves two goals that are structurally misaligned — disseminating knowledge and establishing credentials — and the system has quietly optimised for the second at the expense of the first.</p>
+
+    <p>The costs are real. Publication cycles measured in years. Most published work read by almost no one outside a narrow academic audience. Practitioners, policymakers, and builders — the people most likely to act on findings — largely unreachable through journals. Studies suggest practitioners engage with less than 15% of published academic work. The pipeline designed to produce impact often doesn't.</p>
+
+    <p>Meanwhile, alternatives are maturing. Preprint servers like arXiv and SSRN now function as real-time dissemination channels in fast-moving fields; roughly 77% of computer science preprints eventually reach peer-reviewed publication, meaning the two are complementary rather than competing. Academics are among the fastest-growing categories on Substack. A 2023 Knowledge Exchange study identified 45 platforms now operating as part of the alternative publishing ecosystem. The infrastructure exists. The question is how to navigate it deliberately.</p>
+
+    <hr />
+
+    <p>None of this means peer review is useless. It isn't. For high-stakes claims — work that will inform clinical decisions, regulatory frameworks, or contested policy — the credibility stack still matters, and shortcuts carry real costs. The problem is not that formal publication exists. The problem is treating it as the default for everything, regardless of what the work is for.</p>
+
+    <p>The right question before sharing anything is: <em>who actually needs this, what do they need to do with it, and how much would it cost them if I'm wrong?</em></p>
+
+    <p>Those three variables — audience, purpose, and stakes — determine most of what follows: how much methodology to show, how fast to move, which channels to use, and what kind of credibility-building to do in place of formal peer review. Transparency about methods, explicit acknowledgment of limitations, open data where possible, and genuine openness to critique can carry significant weight — not as replacements for rigour, but as visible evidence of it.</p>
+
+    <hr />
+
+    <p>The framework below works through five questions and routes you to one of five dissemination strategies, each with specific channel recommendations, format guidance, and a concrete checklist for maintaining credibility without formal peer review. It also tells you the specific conditions under which escalating to formal publication is worth it — because sometimes it genuinely is.</p>
+
+    <p>Use it as a thinking tool, not a decision machine. The interesting question it is really asking is: <em>what does success actually look like for this piece of work?</em> Getting clear on that tends to make everything else easier.</p>
+
+    <div id="fw-root"></div>
+
+    <hr />
+
+    <h2>Resources</h2>
+
+    <div class="resources">
+
+      <p>Trueblood, J. S., Allison, D. B., Field, S. M., Fishbach, A., et al. (2025). <a href="https://doi.org/10.1073/pnas.2401231121" target="_blank" rel="noopener">The misalignment of incentives in academic publishing and implications for journal reform.</a> <em>PNAS</em>, 122(5), e2401231121. The formal academic case for the argument this post makes informally — that dissemination and credentialling are structurally in tension, and the system has optimised for the wrong one.</p>
+
+      <p>Fraser, N., Brierley, L., Dey, G., Polka, J. K., Pálfy, M., Nanni, F., &amp; Coates, J. A. (2021). <a href="https://doi.org/10.1371/journal.pbio.3000959" target="_blank" rel="noopener">The evolving role of preprints in the dissemination of COVID-19 research and their impact on the science communication landscape.</a> <em>PLOS Biology</em>, 19(4), e3000959. Documents how the pandemic accelerated the legitimisation of preprints as real-time communication tools — a shift that has not reversed.</p>
+
+      <p>Lutz, J-F., Sondervan, J., van Edig, X., Freeman, A., Kramer, B., &amp; Rosenkrantz Hansen, C. (2023). <a href="https://doi.org/10.21428/996e2e37.0eafc1a8" target="_blank" rel="noopener"><em>Knowledge Exchange Analysis Report on Alternative Publishing Platforms.</em></a> The most comprehensive survey of the alternative publishing ecosystem; identified 45 platforms operating outside traditional journal infrastructure.</p>
+
+      <p>Mastroianni, A. (2022, December 13). <a href="https://experimentalhistory.substack.com/p/the-rise-and-fall-of-peer-review" target="_blank" rel="noopener">The rise and fall of peer review.</a> <em>Experimental History</em> (Substack). A sharp, evidence-led argument that peer review functions less well as a quality filter than its institutional prestige implies — and what might replace it.</p>
+
+      <p>Buranyi, S. (2017, June 27). <a href="https://www.theguardian.com/science/2017/jun/27/profitable-business-scientific-publishing-bad-for-science" target="_blank" rel="noopener">Is the staggeringly profitable business of scientific publishing bad for science?</a> <em>The Guardian.</em> A useful orienting piece on how the commercial structure of academic publishing created the incentive misalignments researchers now routinely complain about.</p>
+
+    </div>
+
+    <a class="back" href="/">&#8592; Back</a>
+
+  </div>
+
+</div>
+
+<script>
+  // Theme toggle
+  const html = document.documentElement;
+  const btn  = document.getElementById('themeToggle');
+  const saved = localStorage.getItem('mb-theme');
+  if (saved) html.setAttribute('data-theme', saved);
+  btn.addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('mb-theme', next);
+  });
+
+  // Framework Tool
+  const QUESTIONS = [
+    {
+      id: 'goal',
+      question: 'What is your primary goal with this work?',
+      subtext: 'Be honest. The right answer changes the entire downstream strategy.',
+      options: [
+        { value: 'adoption', label: 'Drive practical adoption',              desc: 'You want people to do things differently because of this' },
+        { value: 'policy',   label: 'Inform policy or institutional decisions', desc: 'Regulators, civil servants, or senior organisational leaders' },
+        { value: 'academic', label: 'Advance scholarly discourse',           desc: 'Citations, peer debate, contributing to a formal literature' },
+        { value: 'audience', label: 'Build public thinking / compound ideas', desc: 'Contribute to an ongoing conversation; grow a thinking audience' },
+        { value: 'test',     label: 'Test an idea before investing further',  desc: 'You want signal and pushback before committing to depth' },
+      ],
+    },
+    {
+      id: 'novelty',
+      question: 'What type of contribution is this?',
+      subtext: 'The nature of the claim shapes how much validation is appropriate before sharing.',
+      options: [
+        { value: 'empirical',  label: 'Original empirical finding',       desc: 'New data, new experiment, new primary analysis' },
+        { value: 'synthesis',  label: 'Synthesis or meta-analysis',       desc: 'Drawing together existing evidence into a new picture' },
+        { value: 'conceptual', label: 'Conceptual argument or framework', desc: 'A new way of thinking, not primarily new data' },
+        { value: 'applied',    label: 'Applied case study or evaluation', desc: 'What happened when an idea was put into practice' },
+      ],
+    },
+    {
+      id: 'stakes',
+      question: 'How consequential is it if this turns out to be wrong?',
+      subtext: 'Higher stakes demand more rigour before public dissemination.',
+      options: [
+        { value: 'high',   label: 'Very high', desc: 'Clinical, safety, legal, regulatory, or major policy decisions' },
+        { value: 'medium', label: 'Medium',    desc: 'Business or organisational decisions; meaningful reputational risk' },
+        { value: 'low',    label: 'Lower',     desc: 'Useful and interesting, but not immediately high-consequence' },
+      ],
+    },
+    {
+      id: 'time',
+      question: 'How time-sensitive is this?',
+      subtext: 'Speed matters most when there is a live window for influence — and least when the question is durable.',
+      options: [
+        { value: 'urgent',   label: 'Urgent',            desc: 'Live debate, active policy process, or current-event context' },
+        { value: 'moderate', label: 'Moderate',          desc: 'A months-long window; timely but not urgent' },
+        { value: 'durable',  label: 'Not time-sensitive', desc: 'A durable question; the insight will not expire soon' },
+      ],
+    },
+    {
+      id: 'audience',
+      question: 'Who is your primary audience?',
+      subtext: 'Match the channel to where your audience actually reads — not where you are comfortable writing.',
+      options: [
+        { value: 'practitioners', label: 'Practitioners / operators / builders', desc: 'People making field-level decisions' },
+        { value: 'policy',        label: 'Policymakers or institutions',         desc: 'Regulators, civil servants, institutional leaders' },
+        { value: 'academics',     label: 'Academic researchers',                 desc: 'Peers who will evaluate your methodology carefully' },
+        { value: 'public',        label: 'General informed public',              desc: 'Intelligent non-specialists who follow this space' },
+      ],
+    },
+  ];
+
+  const RECS = {
+    practitioner: {
+      label: 'Open Practitioner Dispatch',
+      tagline: 'Share fast, show your working, invite critique',
+      hue: '#2d6a4f', bg: '#eef7f2',
+      channels: ['Newsletter (Substack or Ghost)', 'LinkedIn long-form article', 'Personal blog / working notes', 'GitHub repo (for data or code)'],
+      format: 'Research note format: context \u2192 method (brief) \u2192 finding \u2192 decision implication \u2192 limitations. Aim for under 2,000 words. Link to full data or methodology appendix for those who want to verify.',
+      credibility: [
+        'State sample, method, and confidence level explicitly \u2014 not as a caveat, as a feature',
+        'Put limitations in the body, not a footnote',
+        'Invite open critique: comment sections, replies, quote-tweets',
+        "Version your work ('v1 \u2014 updated based on feedback on X')",
+      ],
+      escalate: 'If findings attract policy interest or challenge a widely-held position, file a preprint (SSRN, OSF) with full methodology as a durable, citable record.',
+      evidence: 'Studies suggest practitioners engage with less than 15% of published academic work. Meeting them where they read is not a compromise on impact \u2014 it is the strategy.',
+    },
+    policy: {
+      label: 'Policy Brief + Preprint Stack',
+      tagline: 'Two layers: an accessible brief anchored by a transparent methodology',
+      hue: '#7a4f2d', bg: '#f7f2ec',
+      channels: ['SSRN or institutional working paper series', 'Direct outreach to relevant departments or think tanks', 'Policy organisation partnerships for distribution', 'Substack or blog for the public-facing version'],
+      format: 'Two layers: a 4\u20136 page policy brief (exec summary + key evidence + recommendations) paired with a full methodology document or preprint. The brief is the hook; the preprint is the credibility anchor. Never publish the brief without the anchor.',
+      credibility: [
+        'Seek informal pre-publication review from 2\u20133 domain experts before release',
+        "Express uncertainty quantitatively where possible \u2014 confidence intervals, not just 'broadly positive'",
+        'Distinguish clearly between what the evidence shows and what you recommend',
+        'Cite primary sources; do not rely on secondary summaries in a policy context',
+      ],
+      escalate: 'If this will be cited in regulatory or legal contexts, formal peer review is necessary. Begin the journal submission process before the brief is published so they run in parallel.',
+      evidence: 'The EU still relies heavily on peer-reviewed work in formal regulatory texts like the AI Act, even as preprints serve early communication. High-stakes claims require the full credibility stack.',
+    },
+    academic: {
+      label: 'Preprint First, Journal Later',
+      tagline: 'Establish priority, get community feedback, then formalise',
+      hue: '#1a3a5c', bg: '#eef2f7',
+      channels: ['arXiv (STEM, computer science, economics)', 'SSRN (social science, law, finance)', 'OSF Preprints (psychology, social science)', 'bioRxiv / medRxiv (life sciences)'],
+      format: 'Full paper structure with open data and code wherever possible. Include a limitations section that a peer reviewer would respect. Consider pre-registering methodology if the study is not yet complete \u2014 it dramatically strengthens credibility.',
+      credibility: [
+        'Open data and open code wherever the subject matter permits',
+        'Pre-register methodology before data collection begins if applicable',
+        'Link preprint DOI in every public communication about the work',
+        'Be transparent about peer review status when the preprint is cited by others',
+      ],
+      escalate: '77% of CS preprints eventually reach peer-reviewed publication \u2014 treat the preprint as step one of the pipeline, not the endpoint. Target journals where the reviewer community matches your contribution type.',
+      evidence: 'In fast-moving fields like AI, the preprint ecosystem now precedes formal publication by months or years. The two channels are increasingly complementary rather than competing.',
+    },
+    iterative: {
+      label: 'Iterative Public Thinking',
+      tagline: 'Build in the open; let the work accumulate into something citable',
+      hue: '#5c3a1a', bg: '#f7f2ee',
+      channels: ['Substack series or public notes', 'LinkedIn newsletter', 'Living document (Notion, GitBook, GitHub)', 'Twitter/X threads for individual observations'],
+      format: "Sequential posts, each clearly dated. Distinguish 'early thinking' from 'tested framework' in how you label each piece. A linked table of contents creates a navigable body of work that can be cited as a whole.",
+      credibility: [
+        "Label the epistemic status of each piece explicitly: 'hypothesis', 'working model', 'fairly confident'",
+        'Update publicly when you change your mind \u2014 this builds more trust than appearing to always be right',
+        'Link to contradictory evidence and engage with critics in the thread',
+        'Point to primary sources; never just assert',
+      ],
+      escalate: 'If a series crystallises into a novel, defensible contribution, a preprint or review article can formalise it. Your post archive becomes the evidence trail and revision history.',
+      evidence: 'Academics report that newsletters let them share insights before formal publication \u2014 capturing impact during the window when findings are most relevant to live decisions.',
+    },
+    test: {
+      label: 'Rapid Signal Test',
+      tagline: 'Share a minimum viable version; let response guide investment',
+      hue: '#4a3a6b', bg: '#f2f0f7',
+      channels: ['LinkedIn post or short article', 'Twitter/X thread', 'Short Substack post (under 1,000 words)', 'Relevant Slack community or practitioner Discord'],
+      format: 'Here is the question I investigated. Here is the short answer. Here is why it might matter. Here is what I am still uncertain about. Ask directly for counterexamples and contrary evidence.',
+      credibility: [
+        "Lead with your uncertainty, not your confidence \u2014 it disarms defensiveness and gets better feedback",
+        "Be specific about what you actually did: not 'I researched this' but 'I looked at 40 case studies from\u2026'",
+        'Explicitly invite pushback and name the specific assumptions you want stress-tested',
+        'If the signal is strong, commit publicly to going deeper \u2014 creates accountability to follow through',
+      ],
+      escalate: 'Strong engagement, useful disagreement, or direct practitioner interest are all signals to invest in a fuller version. Treat this as step zero of a pipeline with a defined next step.',
+      evidence: 'Speed matters most when there is a live debate or active decision. The cost of being slightly imprecise is often lower than the cost of arriving after the window has closed.',
+    },
+  };
+
+  const QUESTION_LABELS = {
+    goal:     { adoption: 'Adoption', policy: 'Policy', academic: 'Academic', audience: 'Public thinking', test: 'Signal test' },
+    novelty:  { empirical: 'Empirical', synthesis: 'Synthesis', conceptual: 'Conceptual', applied: 'Applied' },
+    stakes:   { high: 'High stakes', medium: 'Med. stakes', low: 'Lower stakes' },
+    time:     { urgent: 'Urgent', moderate: 'Moderate', durable: 'Durable' },
+    audience: { practitioners: 'Practitioners', policy: 'Policymakers', academics: 'Academics', public: 'Public' },
+  };
+
+  function getRecKey(answers) {
+    const { goal, stakes, time, audience } = answers;
+    if (stakes === 'high' || goal === 'policy' || audience === 'policy') return 'policy';
+    if (goal === 'academic' || audience === 'academics')                  return 'academic';
+    if (goal === 'test' || time === 'urgent')                             return 'test';
+    if (goal === 'adoption' || audience === 'practitioners')              return 'practitioner';
+    return 'iterative';
+  }
+
+  const SVG_ARROW = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const SVG_CHECK = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7.5" stroke="currentColor" stroke-opacity="0.3"/><path d="M5 8L7 10L11 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const SVG_RESET = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8a6 6 0 1 0 1.5-3.9M2 4v4h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  let fw = { step: 0, answers: {}, done: false };
+
+  function fwRender() {
+    document.getElementById('fw-root').innerHTML = fw.done ? buildResult() : buildQuestion();
+  }
+
+  function buildDots() {
+    return QUESTIONS.map(function(_, i) {
+      var cls = i < fw.step ? 'fw-dot fw-dot-past' : i === fw.step ? 'fw-dot fw-dot-current' : 'fw-dot fw-dot-future';
+      return '<div class="' + cls + '"></div>';
+    }).join('');
+  }
+
+  function buildQuestion() {
+    var q = QUESTIONS[fw.step];
+    var opts = q.options.map(function(opt) {
+      var sel = fw.answers[q.id] === opt.value ? ' fw-selected' : '';
+      return '<div class="fw-option' + sel + '" onclick="fwSelect(\'' + opt.value + '\')">'
+        + '<div class="fw-option-icon">' + SVG_ARROW + '</div>'
+        + '<div><div class="fw-option-label">' + opt.label + '</div>'
+        + '<div class="fw-option-desc">' + opt.desc + '</div></div>'
+        + '</div>';
+    }).join('');
+    return '<div class="fw-wrap fw-animated">'
+      + '<div class="fw-header"><span class="fw-wordmark">Research Dissemination Framework</span>'
+      + '<div class="fw-progress">' + buildDots() + '</div></div>'
+      + '<div class="fw-main"><div style="text-align:center;margin-bottom:32px">'
+      + '<div class="fw-step-label">Question ' + (fw.step + 1) + ' of ' + QUESTIONS.length + '</div>'
+      + '<h2 class="fw-question">' + q.question + '</h2>'
+      + '<p class="fw-subtext">' + q.subtext + '</p></div>'
+      + '<div class="fw-options">' + opts + '</div></div></div>';
+  }
+
+  function buildResult() {
+    var rec = RECS[getRecKey(fw.answers)];
+    var chips = Object.entries(fw.answers).map(function(e) {
+      return '<span class="fw-chip">' + (QUESTION_LABELS[e[0]] && QUESTION_LABELS[e[0]][e[1]] ? QUESTION_LABELS[e[0]][e[1]] : e[1]) + '</span>';
+    }).join('');
+    var channels = rec.channels.map(function(c) {
+      return '<div class="fw-channel-pill" style="background:' + rec.bg + ';border:1px solid ' + rec.hue + '30">' + c + '</div>';
+    }).join('');
+    var creds = rec.credibility.map(function(c) {
+      return '<li class="fw-cred-item"><span class="fw-cred-icon" style="color:' + rec.hue + '">' + SVG_CHECK + '</span><span>' + c + '</span></li>';
+    }).join('');
+    return '<div class="fw-wrap fw-animated">'
+      + '<div class="fw-header"><span class="fw-wordmark">Research Dissemination Framework</span>'
+      + '<button class="fw-reset-btn" onclick="fwReset()">' + SVG_RESET + ' Start over</button></div>'
+      + '<div class="fw-main">'
+      + '<div class="fw-rec-label">Your recommendation</div>'
+      + '<div class="fw-answers-row">' + chips + '</div>'
+      + '<div class="fw-result-card">'
+      + '<div class="fw-result-header">'
+      + '<div class="fw-result-tag" style="background:' + rec.hue + '">' + rec.label + '</div>'
+      + '<h2 class="fw-result-title">' + rec.label + '</h2>'
+      + '<p class="fw-result-tagline">' + rec.tagline + '</p></div>'
+      + '<div class="fw-result-body">'
+      + '<div class="fw-section"><div class="fw-section-title" style="color:' + rec.hue + '">Recommended channels</div>'
+      + '<div class="fw-channel-grid">' + channels + '</div></div>'
+      + '<div class="fw-section"><div class="fw-section-title" style="color:' + rec.hue + '">Format guidance</div>'
+      + '<p class="fw-body-text">' + rec.format + '</p></div>'
+      + '<div class="fw-section"><div class="fw-section-title" style="color:' + rec.hue + '">How to preserve credibility without formal peer review</div>'
+      + '<ul class="fw-cred-list">' + creds + '</ul></div>'
+      + '<div class="fw-section"><div class="fw-section-title" style="color:' + rec.hue + '">When to escalate to formal publication</div>'
+      + '<div class="fw-escalate-box" style="background:' + rec.bg + ';border:1px solid ' + rec.hue + '40">' + rec.escalate + '</div></div>'
+      + '<div class="fw-section"><div class="fw-section-title" style="color:' + rec.hue + '">Evidence base</div>'
+      + '<div class="fw-evidence-box">' + rec.evidence + '</div></div>'
+      + '</div></div>'
+      + '<div class="fw-reset-center"><button class="fw-reset-btn" onclick="fwReset()">' + SVG_RESET + ' Run again with different inputs</button></div>'
+      + '</div></div>';
+  }
+
+  function fwSelect(value) {
+    var q = QUESTIONS[fw.step];
+    fw.answers = Object.assign({}, fw.answers);
+    fw.answers[q.id] = value;
+    if (fw.step < QUESTIONS.length - 1) {
+      setTimeout(function() { fw.step++; fwRender(); }, 180);
+    } else {
+      setTimeout(function() { fw.done = true; fwRender(); }, 180);
+    }
+  }
+
+  function fwReset() {
+    fw = { step: 0, answers: {}, done: false };
+    fwRender();
+  }
+
+  fwRender();
+</script>
+
+</body>
+</html>
